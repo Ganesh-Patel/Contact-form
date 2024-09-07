@@ -22,7 +22,7 @@ const Form1 = () => {
 
     try {
       // Make the API call
-      const response = await axios.post('http://localhost:5000/submit-form', {
+      const response = await axios.post('https://contact-form-pgqm.onrender.com/submit-form', {
         name,
         email,
         message
