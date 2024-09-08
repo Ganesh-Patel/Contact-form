@@ -9,6 +9,11 @@ const Form1 = () => {
   const [formStatus, setFormStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+    // Regular expressions for validation
+    const nameRegex = /^[a-zA-Z\s]+$/; 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    const minMessageLength = 10; 
+
   const submit = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Show loading state
@@ -16,6 +21,22 @@ const Form1 = () => {
     // Validate form data
     if (!name || !email || !message) {
       setFormStatus('Please fill out all fields.');
+      setIsLoading(false);
+      return;
+    } if (!nameRegex.test(name)) {
+      setFormStatus('Please enter a valid name (letters and spaces only).');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setFormStatus('Please enter a valid email address.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (message.length < minMessageLength) {
+      setFormStatus(`Message must be at least ${minMessageLength} characters long.`);
       setIsLoading(false);
       return;
     }
@@ -27,7 +48,9 @@ const Form1 = () => {
         email,
         message
       });
-
+      console.log('API Response:', JSON.stringify(response, null, 2)); 
+      console.log('Response Status:', response.status);
+      console.log('Response Data:', JSON.stringify(response.data, null, 2)); 
       // Handle the response
       if (response.status === 200) {
         setFormStatus('Thank you for your message, we will be in touch in no time!');
@@ -37,6 +60,7 @@ const Form1 = () => {
       } else {
         setFormStatus('Failed to send message. Please try again later.');
       }
+    
     } catch (error) {
       console.error('There was an error sending the message:', error);
       setFormStatus('Failed to send message. Please try again later.');
