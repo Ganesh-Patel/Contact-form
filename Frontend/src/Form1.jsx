@@ -13,7 +13,6 @@ const Form1 = () => {
     const nameRegex = /^[a-zA-Z\s]+$/; 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
     const minMessageLength = 10; 
-
   const submit = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Show loading state
@@ -42,8 +41,8 @@ const Form1 = () => {
     }
 
     try {
-      // Make the API call
-      const response = await axios.post('https://contact-form-pgqm.onrender.com/submit-form', {
+      // Make the API call  for live https://contact-form-pgqm.onrender.com/submit-form
+      const response = await axios.post('http://localhost:5000/submit-form', {
         name,
         email,
         message
@@ -57,7 +56,11 @@ const Form1 = () => {
         setName('');
         setEmail('');
         setMessage('');
-      } else {
+      } else if(response.status === 400)
+      {
+        setFormStatus('Email address is invalid.');
+      }
+      else {
         setFormStatus('Failed to send message. Please try again later.');
       }
     
