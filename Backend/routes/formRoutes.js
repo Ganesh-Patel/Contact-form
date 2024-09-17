@@ -8,9 +8,10 @@ import dotenv from 'dotenv/config';
 
 const router = express.Router();
 
-const kb = kickbox.client(process.env.API_KEY).kickbox();
+const kb = kickbox.client(process.env.KICKBOX_API_KEY).kickbox();
 
 router.post('/submit-form', async (req, res) => {
+    console.log('object', req.body)
     const { name, email, message } = req.body;
 
     if (!name || !email || !message) {
